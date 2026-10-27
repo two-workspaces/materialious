@@ -1,49 +1,28 @@
 // Railway wrapper for materialious-full.
-// 1. Waits for Postgres and creates the app database if missing.
-// 2. Unless PUBLIC_REGISTRATION_ALLOWED is set explicitly, sign-ups stay open
-//    only until ADMIN_USERNAME exists, then the app restarts with them closed.
-import pg from 'pg';
+// Unless PUBLIC_REGISTRATION_ALLOWED is set explicitly, sign-ups stay open only
+// until ADMIN_USERNAME exists, then the app restarts with them closed.
+// SQLite, not Postgres: 1.18.x declares UUIDV4 columns, which only SQLite accepts.
+import sqlite3 from 'sqlite3';
 import { spawn } from 'node:child_process';
+import { mkdirSync } from 'node:fs';
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-const uri = new URL(process.env.DATABASE_CONNECTION_URI);
-const dbName = decodeURIComponent(uri.pathname.slice(1));
+const dbFile = (process.env.DATABASE_CONNECTION_URI || '').replace(/^sqlite:\/\//, '');
 const admin = (process.env.ADMIN_USERNAME || '').trim();
 process.env.PUBLIC_ADMIN_USERNAMES ||= admin;
+if (dbFile.startsWith('/')) mkdirSync(dbFile.slice(0, dbFile.lastIndexOf('/')) || '/', { recursive: true });
 
-async function query(database, sql, params) {
-	const u = new URL(uri);
-	u.pathname = '/' + database;
-	const c = new pg.Client({ connectionString: u.href });
-	await c.connect();
-	try {
-		return await c.query(sql, params);
-	} finally {
-		await c.end();
-	}
-}
-
-for (;;) {
-	try {
-		const r = await query('postgres', 'SELECT 1 FROM pg_database WHERE datname = $1', [dbName]);
-		if (!r.rowCount) {
-			await query('postgres', `CREATE DATABASE "${dbName.replaceAll('"', '""')}"`);
-			console.log(`railway: created database ${dbName}`);
-		}
-		break;
-	} catch (e) {
-		console.log('railway: waiting for postgres:', e.message);
-		await sleep(2000);
-	}
-}
-
-async function adminExists() {
-	if (!admin) return true; // no admin named: never auto-open sign-ups
-	try {
-		return (await query(dbName, 'SELECT 1 FROM "Users" WHERE username = $1', [admin])).rowCount > 0;
-	} catch {
-		return false; // table not created yet
-	}
+function adminExists() {
+	if (!admin) return Promise.resolve(true); // no admin named: never auto-open sign-ups
+	return new Promise((resolve) => {
+		const db = new sqlite3.Database(dbFile, sqlite3.OPEN_READONLY, (err) => {
+			if (err) return resolve(false); // no database yet
+			db.get('SELECT 1 FROM Users WHERE username = ?', [admin], (e, row) => {
+				db.close();
+				resolve(!e && !!row);
+			});
+		});
+	});
 }
 
 const gated = process.env.PUBLIC_REGISTRATION_ALLOWED === undefined;

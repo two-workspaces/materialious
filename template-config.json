@@ -35,8 +35,8 @@
           "isOptional": false
         },
         "DATABASE_CONNECTION_URI": {
-          "defaultValue": "postgresql://${{Postgres.POSTGRES_USER}}:${{Postgres.POSTGRES_PASSWORD}}@${{Postgres.RAILWAY_PRIVATE_DOMAIN}}:5432/materialious",
-          "description": "Separate 'materialious' database on the shared Postgres, created on first boot.",
+          "defaultValue": "sqlite:///materialious-data/materialious.db",
+          "description": "Accounts, subscriptions and history live in SQLite on the volume.",
           "isOptional": false
         },
         "PUBLIC_DEFAULT_INVIDIOUS_INSTANCE": {
@@ -53,6 +53,11 @@
           "defaultValue": "3000",
           "description": "Port Materialious listens on.",
           "isOptional": false
+        }
+      },
+      "volumeMounts": {
+        "2c4f462e-fba1-4fe1-b880-f45aae4e69f1": {
+          "mountPath": "/materialious-data"
         }
       }
     },
