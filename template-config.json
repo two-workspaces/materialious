@@ -87,7 +87,7 @@
         "INVIDIOUS_CONFIG": {
           "isOptional": false,
           "description": "Full Invidious config in YAML. Database credentials, companion wiring, and domain are all references \u2014 leave them alone.",
-          "defaultValue": "db:\n  user: ${{Postgres.POSTGRES_USER}}\n  password: ${{Postgres.POSTGRES_PASSWORD}}\n  host: ${{Postgres.RAILWAY_PRIVATE_DOMAIN}}\n  port: 5432\n  dbname: ${{Postgres.POSTGRES_DB}}\ncheck_tables: true\ndomain: ${{RAILWAY_PUBLIC_DOMAIN}}\nhttps_only: true\nexternal_port: 443\nhmac_key: ${{HMAC_KEY}}\nport: 3000\nhost_binding: \"0.0.0.0\"\ninvidious_companion:\n  - private_url: \"http://${{Companion.RAILWAY_PRIVATE_DOMAIN}}:8282/companion\"\n    public_url: \"https://${{RAILWAY_PUBLIC_DOMAIN}}/companion\"\ninvidious_companion_key: ${{INVIDIOUS_COMPANION_KEY}}"
+          "defaultValue": "db:\n  user: ${{Postgres.POSTGRES_USER}}\n  password: ${{Postgres.POSTGRES_PASSWORD}}\n  host: ${{Postgres.RAILWAY_PRIVATE_DOMAIN}}\n  port: 5432\n  dbname: ${{Postgres.POSTGRES_DB}}\ncheck_tables: true\nregistration_enabled: false\ndomain: ${{RAILWAY_PUBLIC_DOMAIN}}\nhttps_only: true\nexternal_port: 443\nhmac_key: ${{HMAC_KEY}}\nport: 3000\nhost_binding: \"0.0.0.0\"\ninvidious_companion:\n  - private_url: \"http://${{Companion.RAILWAY_PRIVATE_DOMAIN}}:8282/companion\"\n    public_url: \"https://${{RAILWAY_PUBLIC_DOMAIN}}/companion\"\ninvidious_companion_key: ${{INVIDIOUS_COMPANION_KEY}}"
         },
         "INVIDIOUS_COMPANION_KEY": {
           "isOptional": false,
@@ -116,7 +116,7 @@
         "restartPolicyMaxRetries": 10
       },
       "source": {
-        "image": "quay.io/invidious/invidious-companion:2026.10.18-fcb0456"
+        "image": "quay.io/invidious/invidious-companion:2026.09.19-bb3b37f"
       },
       "variables": {
         "PORT": {
