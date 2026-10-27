@@ -5,5 +5,6 @@
   "category": "Other",
   "image": "https://raw.githubusercontent.com/two-workspaces/materialious/main/icon.png",
   "card_desc": "Materialious: a modern Material Design YouTube client on your own Invidious. Accounts with synced subscriptions and history, SponsorBlock, DeArrow and dislike counts, watch parties. Bundles Invidious, Companion and Postgres; sign-ups close after the admin registers.",
-  "id": "ecbe9abe-1fdb-46b1-a66c-960aa0c268f6"
+  "id": "ecbe9abe-1fdb-46b1-a66c-960aa0c268f6",
+  "published": true
 }
