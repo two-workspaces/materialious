@@ -1,0 +1,8 @@
+{
+  "name": "Materialious | Modern YouTube Client on Your Own Invidious",
+  "short_name": "Materialious",
+  "description": "Material Design YouTube client with your own Invidious backend",
+  "category": "Other",
+  "image": "https://raw.githubusercontent.com/two-workspaces/materialious/main/icon.png",
+  "card_desc": "Materialious: a modern Material Design YouTube client on your own Invidious. Accounts with synced subscriptions and history, SponsorBlock, DeArrow and dislike counts, watch parties. Bundles Invidious, Companion and Postgres; sign-ups close after the admin registers."
+}
