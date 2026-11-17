@@ -46,7 +46,9 @@ The stack is four services: Materialious, Invidious, Invidious Companion and Pos
 
 **Custom domain.** Add the domain to the Materialious service and set `ORIGIN` to `https://your.domain`.
 
-**Upgrading.** Bump the `FROM` tag in the Dockerfile of your fork. Bump Invidious and Companion together by changing their image tags to the newest dated tags on [quay.io](https://quay.io/repository/invidious/invidious?tab=tags). If metadata starts failing with "YouTube API returned status code 400", a fresh Invidious image is usually the fix.
+**Invidious restarts itself every hour.** Upstream says Invidious [must be restarted often](https://docs.invidious.io/installation/), ideally every hour. A small wrapper does that, and restarts it sooner if it reaches 90% of its memory limit, so the container never goes down. A restart takes a few seconds. Change the interval with `RESTART_EVERY` (seconds) and the memory threshold with `MEMORY_PCT` on the Invidious service.
+
+**Upgrading.** Both images are built from the [template source](https://github.com/two-workspaces/materialious): Materialious from the `FROM` tag in `Dockerfile`, Invidious from `invidious/Dockerfile`. Bump them in your fork, then point the services at your fork's images. Bump Invidious and Companion together, using the newest dated tags on [quay.io](https://quay.io/repository/invidious/invidious?tab=tags). If metadata starts failing with "YouTube API returned status code 400", a fresh Invidious image is usually the fix.
 
 **Back up.** Materialious accounts live in `/materialious-data` on the Materialious volume. Use Railway's volume backups.
 

@@ -4,9 +4,6 @@
     "2c4f462e-fba1-4fe1-b880-f45aae4e69f1": {
       "icon": "https://raw.githubusercontent.com/two-workspaces/materialious/main/icon.png",
       "name": "Materialious",
-      "build": {
-        "dockerfilePath": "Dockerfile"
-      },
       "deploy": {
         "startCommand": null,
         "healthcheckPath": "/api/config",
@@ -15,8 +12,7 @@
         "restartPolicyMaxRetries": 10
       },
       "source": {
-        "repo": "https://github.com/two-workspaces/materialious",
-        "rootDirectory": null
+        "image": "ghcr.io/two-workspaces/materialious:7926629"
       },
       "networking": {
         "serviceDomains": {
@@ -65,13 +61,13 @@
       "icon": "https://files.zaur.app//gXy9gOzh8XvA.png",
       "name": "Invidious",
       "deploy": {
-        "startCommand": "/bin/sh -c \"until nc -z $PGHOST 5432; do echo waiting for postgres; sleep 2; done; exec /invidious/invidious\"",
-        "healthcheckPath": "/feed/popular",
+        "startCommand": null,
+        "healthcheckPath": "/api/v1/stats",
         "restartPolicyType": "ON_FAILURE",
         "restartPolicyMaxRetries": 10
       },
       "source": {
-        "image": "quay.io/invidious/invidious:2026.10.26-1c4b41f"
+        "image": "ghcr.io/two-workspaces/materialious/invidious:7926629"
       },
       "variables": {
         "PORT": {
