@@ -39,18 +39,22 @@ async function start() {
 			? `railway: sign-ups OPEN until "${admin}" registers`
 			: 'railway: sign-ups closed (admin exists)');
 	}
-	child = spawn('node', ['build'], { cwd: '/app', env, stdio: 'inherit' });
-	child.on('exit', (code, sig) => {
+	const c = spawn('node', ['build'], { cwd: '/app', env, stdio: 'inherit' });
+	child = c;
+	// A crash restarts the app in place instead of exiting the container.
+	c.on('exit', (code, sig) => {
 		if (stopping) return;
-		process.exit(code ?? (sig ? 1 : 0));
+		console.log(`railway: materialious exited (${code ?? sig}), starting it again in 2 s`);
+		setTimeout(start, 2000);
 	});
-	while (open && child.exitCode === null) {
+	while (open && c.exitCode === null && c.signalCode === null) {
 		await sleep(5000);
+		if (c !== child) return;
 		if (await adminExists()) {
 			console.log(`railway: "${admin}" registered, restarting with sign-ups closed`);
 			stopping = true;
-			child.kill('SIGTERM');
-			await new Promise((r) => child.once('exit', r));
+			c.kill('SIGTERM');
+			await new Promise((r) => c.once('exit', r));
 			stopping = false;
 			return start();
 		}
