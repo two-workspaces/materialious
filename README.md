@@ -1,6 +1,6 @@
 # Deploy and Host Materialious on Railway
 
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/materialious?referralCode=sLjDXb&utm_medium=integration&utm_source=button&utm_campaign=materialious)
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/youtube?referralCode=sLjDXb&utm_medium=integration&utm_source=button&utm_campaign=materialious)
 
 [Materialious](https://github.com/Materialious/Materialious) is a modern Material Design client for YouTube, built on Invidious. You get a clean, fast YouTube without ads or tracking. It has accounts that sync subscriptions, history and settings across devices, SponsorBlock segment skipping, DeArrow titles and thumbnails, Return YouTube Dislike counts, chapters, playlists and watch parties. This template runs Materialious with its own private Invidious backend, so you don't depend on a public instance.
 
